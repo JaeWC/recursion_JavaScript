@@ -9,19 +9,21 @@ var getElementsByClassName = function(className
   var bodyElement = document.body;
   var classNameList = [];
 
-  var findClassElement = function(bodyElement) {
-    if (bodyElement.classList && bodyElement.classList.contains(className)) {
-      classNameList.push(bodyElement);
+  var findClassElement = function(element) {
+    if (element.classList && element.classList.contains(className)) {
+      classNameList.push(element);
     }
    
-    if (bodyElement.hasChildNodes()) {
-      var children = bodyElement.childNodes;
+    if (element.hasChildNodes()) {
+      var children = element.childNodes;
       for (var i = 0; i < children.length; i++) {
         findClassElement(children[i]);
       }
     }
   }
+
   findClassElement(bodyElement)
+  
   return classNameList;
   // your code here
 };
