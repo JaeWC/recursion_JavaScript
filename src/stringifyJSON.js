@@ -16,8 +16,11 @@ var stringifyJSON = function(obj) {
     } else {
       var resultArray = '[' + stringifyJSON(obj[0]);
       for (var i = 1; i < obj.length; i++) {
-        resultArray += ',';
-        resultArray += stringifyJSON(obj[i]);
+        if (obj[i] === undefined || typeof obj[i] === 'function' || typeof obj[i] === 'symbol') {
+          resultArray += ',' + stringifyJSON(null);
+        } else {
+          resultArray += ',' + stringifyJSON(obj[i]);
+        }
       }
       resultArray += ']';
       return resultArray;
@@ -28,14 +31,14 @@ var stringifyJSON = function(obj) {
       } else {
         var resultObject = '{';
         for (var prop in obj) {
-          if (obj[prop] === undefined || typeof obj[prop] === 'function' || obj[prop === null]) {
+          if (obj[prop] === undefined || typeof obj[prop] === 'function' || typeof obj[prop] === 'symbol') {
             delete obj[prop];
             return stringifyJSON(obj);
           } else {
             resultObject += stringifyJSON(prop) + ":" + stringifyJSON(obj[prop]) + ',';
           }
         }
-        return resultObject.substr(0, resultObject.length - 1) + '}';
+        return resultObject.slice(0, resultObject.length - 1) + '}';
       }
     }
 
